@@ -79,6 +79,43 @@ contract Arbitrage is Test {
         /**
          * Please add your solution below
          */
+        // tokenB --> tokenA --> tokenC --> tokenE --> tokenD --> tokenC --> tokenB
+        address[] memory path;
+        path = new address[](2);
+
+        path[0] = address(tokenB);
+        path[1] = address(tokenA);
+        router.swapExactTokensForTokens(tokensBefore, 0 ether, path, arbitrager, block.timestamp);
+
+        uint256 tokensNow = tokenA.balanceOf(arbitrager);
+        tokenA.approve(address(router), tokensNow);
+        path[0] = address(tokenA);
+        path[1] = address(tokenC);
+        router.swapExactTokensForTokens(tokensNow, 0 ether, path, arbitrager, block.timestamp);
+
+        tokensNow = tokenC.balanceOf(arbitrager);
+        tokenC.approve(address(router), tokensNow);
+        path[0] = address(tokenC);
+        path[1] = address(tokenE);
+        router.swapExactTokensForTokens(tokensNow, 0 ether, path, arbitrager, block.timestamp);
+
+        tokensNow = tokenE.balanceOf(arbitrager);
+        tokenE.approve(address(router), tokensNow);
+        path[0] = address(tokenE);
+        path[1] = address(tokenD);
+        router.swapExactTokensForTokens(tokensNow, 0 ether, path, arbitrager, block.timestamp);
+
+        tokensNow = tokenD.balanceOf(arbitrager);
+        tokenD.approve(address(router), tokensNow);
+        path[0] = address(tokenD);
+        path[1] = address(tokenC);
+        router.swapExactTokensForTokens(tokensNow, 0 ether, path, arbitrager, block.timestamp);
+
+        tokensNow = tokenC.balanceOf(arbitrager);
+        tokenC.approve(address(router), tokensNow);
+        path[0] = address(tokenC);
+        path[1] = address(tokenB);
+        router.swapExactTokensForTokens(tokensNow, 0 ether, path, arbitrager, block.timestamp);
         /**
          * Please add your solution above
          */
